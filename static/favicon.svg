@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Logo">
+  <rect width="512" height="512" rx="96" fill="#dc2626"/>
+  <path d="M128 144h256v40H128zM128 236h256v40H128zM128 328h160v40H128z" fill="#fff"/>
+</svg>

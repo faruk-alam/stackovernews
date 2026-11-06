@@ -1,0 +1,31 @@
+<div class="container-site py-6 sm:py-10">
+  <nav aria-label="Breadcrumb" class="text-sm text-neutral-500">
+    <ol class="flex flex-wrap items-center gap-1">
+      <li><a href="/" class="hover:text-brand-600">Home</a></li>
+      <li aria-hidden="true">›</li>
+      <li aria-current="page">{{categoryName}}</li>
+    </ol>
+  </nav>
+
+  <header class="mt-4 border-b border-neutral-200 pb-6 dark:border-neutral-800">
+    <h1 class="text-3xl font-black tracking-tight sm:text-4xl">{{categoryName}}</h1>
+    <p class="mt-2 max-w-2xl text-neutral-600 dark:text-neutral-400">{{categoryDescription}}</p>
+    <p class="mt-2 text-sm text-neutral-500">{{totalCount}} articles · Page {{page}} of {{totalPages}}</p>
+  </header>
+
+  {{adCategory}}
+
+  <section class="mt-8" aria-label="{{categoryName}} articles">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {{cards}}
+    </div>
+  </section>
+
+  <nav class="mt-10 flex items-center justify-between gap-4" aria-label="Pagination">
+    {{prevLink}}
+    <ol class="flex items-center gap-1 text-sm">
+      {{pageNumbers}}
+    </ol>
+    {{nextLink}}
+  </nav>
+</div>

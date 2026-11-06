@@ -1,0 +1,75 @@
+name: Build and deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+        env:
+          # Public URL of the site, e.g. https://www.yourdomain.com (no trailing slash)
+          SITE_URL: ${{ vars.SITE_URL }}
+          # AdSense publisher ID, e.g. ca-pub-1234567890123456 (leave unset to show placeholders)
+          ADSENSE_CLIENT: ${{ vars.ADSENSE_CLIENT }}
+
+      - name: Upload build artifact (for inspection)
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 3
+
+      # --- Option A: FTP / FTPS (default for Hostinger shared hosting) -------
+      - name: Deploy via FTP(S)
+        if: ${{ vars.DEPLOY_PROTOCOL != 'sftp' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          port: ${{ vars.FTP_PORT || 21 }}
+          local-dir: ./dist/
+          server-dir: ${{ vars.FTP_SERVER_DIR || 'public_html/' }}
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+
+      # --- Option B: SFTP (Hostinger Business/Cloud plans, VPS) --------------
+      - name: Deploy via SFTP
+        if: ${{ vars.DEPLOY_PROTOCOL == 'sftp' }}
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ vars.FTP_PORT || 22 }}
+          local_path: ./dist/*
+          remote_path: ${{ vars.FTP_SERVER_DIR || '/public_html' }}
+          sftpArgs: '-o ConnectTimeout=10'

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Default share image">
+  <rect width="1200" height="675" fill="#0a0a0a"/>
+  <rect x="80" y="230" width="140" height="140" rx="28" fill="#dc2626"/>
+  <path d="M115 268h70v11h-70zM115 294h70v11h-70zM115 320h44v11h-44z" fill="#fff"/>
+  <text x="250" y="320" font-family="ui-sans-serif, system-ui, sans-serif" font-size="72" font-weight="900" fill="#fff">The Daily Wire Demo</text>
+  <text x="252" y="375" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30" fill="#a3a3a3">Independent reporting on technology, business, science and culture.</text>
+</svg>

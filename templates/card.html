@@ -1,0 +1,13 @@
+<article class="card">
+  <a href="{{url}}" class="block" tabindex="-1" aria-hidden="true">
+    <img src="{{image}}" alt="" width="1200" height="675" loading="lazy" decoding="async" class="card-image">
+  </a>
+  <div class="flex flex-1 flex-col p-4">
+    <a href="{{categoryUrl}}" class="kicker">{{categoryName}}</a>
+    <h3 class="mt-2 text-lg font-bold leading-snug tracking-tight">
+      <a href="{{url}}" class="hover:text-brand-600">{{title}}</a>
+    </h3>
+    <p class="mt-2 line-clamp-3 text-sm text-neutral-600 dark:text-neutral-400">{{description}}</p>
+    <p class="mt-auto pt-3 text-xs text-neutral-500"><time datetime="{{dateIso}}">{{dateHuman}}</time> · {{readingTime}} min read</p>
+  </div>
+</article>

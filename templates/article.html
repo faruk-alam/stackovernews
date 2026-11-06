@@ -1,0 +1,62 @@
+<article class="container-site py-6 sm:py-10" data-article>
+  <nav aria-label="Breadcrumb" class="text-sm text-neutral-500">
+    <ol class="flex flex-wrap items-center gap-1">
+      <li><a href="/" class="hover:text-brand-600">Home</a></li>
+      <li aria-hidden="true">›</li>
+      <li><a href="{{categoryUrl}}" class="hover:text-brand-600">{{categoryName}}</a></li>
+      <li aria-hidden="true">›</li>
+      <li aria-current="page" class="truncate max-w-[14rem] sm:max-w-none">{{title}}</li>
+    </ol>
+  </nav>
+
+  <header class="mx-auto mt-6 max-w-3xl">
+    <a href="{{categoryUrl}}" class="kicker">{{categoryName}}</a>
+    <h1 class="mt-2 text-3xl font-black leading-tight tracking-tight sm:text-4xl lg:text-5xl">{{title}}</h1>
+    <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">{{description}}</p>
+    <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-neutral-500">
+      <span>By <span class="font-semibold text-neutral-800 dark:text-neutral-200" rel="author">{{author}}</span></span>
+      <span aria-hidden="true">·</span>
+      <time datetime="{{dateIso}}">{{dateHuman}}</time>
+      <span aria-hidden="true">·</span>
+      <span>{{readingTime}} min read</span>
+    </div>
+  </header>
+
+  <!-- Ad: below headline -->
+  <div class="mx-auto mt-6 max-w-3xl">{{adBelowHeadline}}</div>
+
+  <figure class="mx-auto mt-6 max-w-4xl">
+    <img src="{{image}}" alt="{{imageAlt}}" width="1200" height="675" fetchpriority="high" decoding="async" class="aspect-video w-full rounded-xl object-cover">
+    <figcaption class="mt-2 text-center text-xs text-neutral-500">{{imageCaption}}</figcaption>
+  </figure>
+
+  <div class="prose prose-neutral mx-auto mt-8 max-w-3xl dark:prose-invert prose-headings:font-extrabold prose-headings:tracking-tight lg:prose-lg">
+    {{bodyFirstHalf}}
+    <!-- Ad: mid-article -->
+    <div class="not-prose my-8">{{adMidArticle}}</div>
+    {{bodySecondHalf}}
+  </div>
+
+  <footer class="mx-auto mt-8 max-w-3xl">
+    <div class="flex flex-wrap items-center gap-2 text-sm">
+      <span class="text-neutral-500">Filed under:</span>
+      <a href="{{categoryUrl}}" class="rounded-full bg-neutral-100 px-3 py-1 font-semibold hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700">{{categoryName}}</a>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-2 text-sm">
+      <span class="text-neutral-500">Share:</span>
+      <a class="hover:text-brand-600" href="https://twitter.com/intent/tweet?url={{encodedUrl}}&text={{encodedTitle}}" rel="noopener" target="_blank">X / Twitter</a>
+      <a class="hover:text-brand-600" href="https://www.facebook.com/sharer/sharer.php?u={{encodedUrl}}" rel="noopener" target="_blank">Facebook</a>
+      <a class="hover:text-brand-600" href="https://www.linkedin.com/sharing/share-offsite/?url={{encodedUrl}}" rel="noopener" target="_blank">LinkedIn</a>
+    </div>
+
+    <!-- Ad: end of article -->
+    <div class="mt-8">{{adEndArticle}}</div>
+  </footer>
+</article>
+
+<section class="container-site pb-6" aria-labelledby="related-heading">
+  <h2 id="related-heading" class="section-title">Related Articles</h2>
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {{relatedCards}}
+  </div>
+</section>

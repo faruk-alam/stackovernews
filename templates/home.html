@@ -1,0 +1,40 @@
+<div class="container-site py-6 sm:py-8">
+  <h1 class="sr-only">{{siteName}} – {{tagline}}</h1>
+
+  <!-- Hero + Trending -->
+  <section class="grid gap-6 lg:grid-cols-3" aria-labelledby="top-story-heading">
+    <h2 id="top-story-heading" class="sr-only">Top story</h2>
+    <article class="lg:col-span-2">
+      <a href="{{hero.url}}" class="group block">
+        <img src="{{hero.image}}" alt="{{hero.imageAlt}}" width="1200" height="675" fetchpriority="high" decoding="async" class="aspect-video w-full rounded-xl object-cover">
+        <div class="mt-4">
+          <span class="kicker">{{hero.categoryName}}</span>
+          <h3 class="mt-2 text-2xl font-black leading-tight tracking-tight group-hover:text-brand-600 sm:text-3xl lg:text-4xl">{{hero.title}}</h3>
+          <p class="mt-3 text-base text-neutral-600 dark:text-neutral-400 sm:text-lg">{{hero.description}}</p>
+          <p class="mt-3 text-sm text-neutral-500">By {{hero.author}} · <time datetime="{{hero.dateIso}}">{{hero.dateHuman}}</time> · {{hero.readingTime}} min read</p>
+        </div>
+      </a>
+    </article>
+
+    <aside class="rounded-xl border border-neutral-200 p-5 dark:border-neutral-800" aria-labelledby="trending-heading">
+      <h2 id="trending-heading" class="text-lg font-extrabold tracking-tight">Trending</h2>
+      <ol class="mt-4 divide-y divide-neutral-200 dark:divide-neutral-800">
+        {{trendingList}}
+      </ol>
+    </aside>
+  </section>
+
+  <!-- Ad: below the fold leaderboard with fixed height -->
+  {{adHome}}
+
+  <!-- Latest -->
+  <section class="mt-10" aria-labelledby="latest-heading">
+    <h2 id="latest-heading" class="section-title">Latest News</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {{latestCards}}
+    </div>
+  </section>
+
+  <!-- Category sections -->
+  {{categorySections}}
+</div>

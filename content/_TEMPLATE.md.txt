@@ -1,0 +1,28 @@
+---
+title: "Your Headline Here: Clear, Specific and Under 110 Characters"
+description: "One or two sentences (max ~160 characters) summarising the story. Used for search results and social previews."
+category: technology
+date: 2026-01-01T09:00:00Z
+image: /images/technology-1.svg
+imageAlt: "Describe the image for screen readers and SEO"
+imageCaption: "Optional caption shown under the image. Photo: Name"
+author: Reporter Name
+slug: your-headline-here
+tags: [topic one, topic two]
+# featured: true    # pin as the homepage hero (most recent featured wins)
+# trending: true    # show in the homepage Trending list
+# draft: true       # exclude from the build
+---
+
+Opening paragraph. Lead with the most important fact.
+
+## Subheading
+
+Body text. **Bold** and *italic* are supported, as are [links](https://example.com) and lists:
+
+- Point one
+- Point two
+
+> Blockquotes for pull quotes.
+
+Closing paragraph.
