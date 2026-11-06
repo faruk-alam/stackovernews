@@ -55,6 +55,8 @@ const slugify = (s = '') =>
     .replace(/^-+|-+$/g, '');
 
 const absUrl = (p) => (/^https?:\/\//.test(p) ? p : site.url + (p.startsWith('/') ? p : '/' + p));
+const basePath = new URL(site.url).pathname.replace(/\/$/, '');
+const sitePath = (p) => (p.startsWith('/') && !p.startsWith('//') ? basePath + p : p);
 
 const fmtDate = (d) =>
   new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
@@ -102,15 +104,15 @@ function tpl(name) {
 
 const renderer = new marked.Renderer();
 // Body images: lazy-load and reserve intrinsic size to limit layout shift.
-renderer.image = function ({ href, title, text }) {
+renderer.image = function (href, title, text) {
   const t = title ? ` title="${esc(title)}"` : '';
-  return `<img src="${esc(href)}" alt="${esc(text || '')}"${t} width="1200" height="675" loading="lazy" decoding="async">`;
+  return `<img src="${esc(sitePath(href))}" alt="${esc(text || '')}"${t} width="1200" height="675" loading="lazy" decoding="async">`;
 };
-renderer.link = function ({ href, title, text }) {
+renderer.link = function (href, title, text) {
   const external = /^https?:\/\//.test(href) && !href.startsWith(site.url);
   const t = title ? ` title="${esc(title)}"` : '';
   const rel = external ? ' rel="noopener" target="_blank"' : '';
-  return `<a href="${esc(href)}"${t}${rel}>${text}</a>`;
+  return `<a href="${esc(sitePath(href))}"${t}${rel}>${text}</a>`;
 };
 marked.use({ renderer, gfm: true, breaks: false });
 
@@ -201,6 +203,9 @@ function loadPages() {
 function articleView(a) {
   return {
     ...a,
+    url: sitePath(a.url),
+    categoryUrl: sitePath(a.categoryUrl),
+    image: sitePath(a.image),
     title: esc(a.title),
     description: esc(a.description),
     author: esc(a.author),
@@ -240,12 +245,12 @@ const ADS = {
 
 function navLinks() {
   const items = [['/', 'Home'], ...Object.entries(site.categories).map(([slug, c]) => [`/category/${slug}/`, c.name])];
-  return items.map(([href, label]) => `<a class="nav-link" href="${href}">${esc(label)}</a>`).join('\n');
+  return items.map(([href, label]) => `<a class="nav-link" href="${sitePath(href)}">${esc(label)}</a>`).join('\n');
 }
 
 function footerCategories() {
   return Object.entries(site.categories)
-    .map(([slug, c]) => `<li><a class="hover:text-brand-600" href="/category/${slug}/">${esc(c.name)}</a></li>`)
+    .map(([slug, c]) => `<li><a class="hover:text-brand-600" href="${sitePath(`/category/${slug}/`)}">${esc(c.name)}</a></li>`)
     .join('\n');
 }
 
@@ -272,13 +277,14 @@ const publisherLd = () => ({
  * Wrap page content in the base layout.
  */
 function layout({ title, description, url, ogType = 'website', ogImage, jsonLd, content, robots = 'index, follow', bodyClass = '', ogExtra = '', extraHead = '' }) {
-  const publicConfig = { adsenseClient: site.adsenseClient, siteUrl: site.url };
+  const publicConfig = { adsenseClient: site.adsenseClient, siteUrl: site.url, basePath };
   return render(tpl('base'), {
     lang: site.language,
     locale: site.locale,
     siteName: esc(site.name),
     siteShortName: esc(site.shortName || site.name),
     siteUrl: site.url,
+    basePath,
     tagline: esc(site.tagline),
     twitter: esc(site.twitter),
     title: esc(title),
@@ -321,8 +327,8 @@ function buildHome(articles) {
       (a, i) => `<li class="flex gap-3 py-3">
   <span class="text-2xl font-black leading-none text-neutral-300 dark:text-neutral-700">${i + 1}</span>
   <div>
-    <a href="${a.categoryUrl}" class="kicker">${esc(a.categoryName)}</a>
-    <h3 class="mt-1 text-sm font-bold leading-snug"><a href="${a.url}" class="hover:text-brand-600">${esc(a.title)}</a></h3>
+    <a href="${sitePath(a.categoryUrl)}" class="kicker">${esc(a.categoryName)}</a>
+    <h3 class="mt-1 text-sm font-bold leading-snug"><a href="${sitePath(a.url)}" class="hover:text-brand-600">${esc(a.title)}</a></h3>
   </div>
 </li>`
     )
@@ -333,9 +339,9 @@ function buildHome(articles) {
       const list = articles.filter((a) => a.category === slug).slice(0, 3);
       if (!list.length) return '';
       return `<section class="mt-10" aria-labelledby="cat-${slug}-heading">
-  <h2 id="cat-${slug}-heading" class="section-title"><a href="/category/${slug}/" class="hover:text-brand-600">${esc(c.name)}</a></h2>
+  <h2 id="cat-${slug}-heading" class="section-title"><a href="${sitePath(`/category/${slug}/`)}" class="hover:text-brand-600">${esc(c.name)}</a></h2>
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">${cards(list)}</div>
-  <p class="mt-4 text-right text-sm"><a href="/category/${slug}/" class="font-semibold text-brand-600 hover:underline">More in ${esc(c.name)} →</a></p>
+  <p class="mt-4 text-right text-sm"><a href="${sitePath(`/category/${slug}/`)}" class="font-semibold text-brand-600 hover:underline">More in ${esc(c.name)} →</a></p>
 </section>`;
     })
     .join('\n');
@@ -398,6 +404,7 @@ function buildArticles(articles) {
 
     const content = render(tpl('article'), {
       ...articleView(a),
+      basePath,
       bodyFirstHalf,
       bodySecondHalf,
       encodedUrl: encodeURIComponent(a.absUrl),
@@ -474,11 +481,12 @@ function buildCategories(articles) {
         .map((n) =>
           n === page
             ? `<li><span aria-current="page" class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-brand-600 font-bold text-white">${n}</span></li>`
-            : `<li><a href="${pageUrl(n)}" class="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800">${n}</a></li>`
+            : `<li><a href="${sitePath(pageUrl(n))}" class="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800">${n}</a></li>`
         )
         .join('');
 
       const content = render(tpl('category'), {
+        basePath,
         categoryName: esc(c.name),
         categoryDescription: esc(c.description),
         totalCount: list.length,
@@ -487,8 +495,8 @@ function buildCategories(articles) {
         adCategory: ADS.leaderboard(),
         cards: items.length ? cards(items) : '<p class="text-neutral-500">No articles yet.</p>',
         pageNumbers,
-        prevLink: prev ? `<a href="${prev}" class="${linkCls}" rel="prev">← Newer</a>` : '<span></span>',
-        nextLink: next ? `<a href="${next}" class="${linkCls}" rel="next">Older →</a>` : '<span></span>'
+        prevLink: prev ? `<a href="${sitePath(prev)}" class="${linkCls}" rel="prev">← Newer</a>` : '<span></span>',
+        nextLink: next ? `<a href="${sitePath(next)}" class="${linkCls}" rel="next">Older →</a>` : '<span></span>'
       });
 
       const title = page === 1 ? `${c.name} News | ${site.name}` : `${c.name} News – Page ${page} | ${site.name}`;
@@ -528,6 +536,7 @@ function buildCategories(articles) {
 function buildPages(pages) {
   for (const p of pages) {
     const content = render(tpl('page'), {
+      basePath,
       title: esc(p.title),
       description: esc(p.description),
       dateIso: isoDate(p.date),
@@ -562,7 +571,7 @@ function build404(articles) {
       url: '/404.html',
       robots: 'noindex, follow',
       jsonLd: [breadcrumbLd([{ name: 'Home', url: '/' }])],
-      content: render(tpl('404'), { latestCards: cards(articles.slice(0, 3)) })
+      content: render(tpl('404'), { basePath, latestCards: cards(articles.slice(0, 3)) })
     })
   );
 }
@@ -672,7 +681,7 @@ function buildRobots() {
     'robots.txt',
     `User-agent: *
 Allow: /
-Disallow: /404.html
+Disallow: ${sitePath('/404.html')}
 
 Sitemap: ${site.url}/sitemap.xml
 Sitemap: ${site.url}/news-sitemap.xml
@@ -684,10 +693,10 @@ function buildSearchIndex(articles) {
   const index = articles.map((a) => ({
     t: a.title,
     d: a.description,
-    u: a.url,
+    u: sitePath(a.url),
     c: a.categoryName,
     dt: a.date.toISOString().slice(0, 10),
-    i: a.image,
+    i: sitePath(a.image),
     k: a.tags.join(' ')
   }));
   writeFile('search.json', JSON.stringify(index));

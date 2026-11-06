@@ -3,7 +3,7 @@ module.exports = {
   name: 'The Daily Wire Demo',
   shortName: 'Daily Wire',
   tagline: 'Independent reporting on technology, business, science and culture.',
-  // Public URL without trailing slash. Used for canonical URLs, sitemaps and feeds.
+  // Public URL without trailing slash, including any base path. Used throughout the build.
   url: process.env.SITE_URL || 'https://example.com',
   language: 'en',
   locale: 'en_US',

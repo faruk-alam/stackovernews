@@ -42,6 +42,14 @@ Other scripts:
 | `npm run build:html` | Only the HTML/feeds (no CSS) |
 | `npm run build:css` | Only Tailwind CSS |
 
+## GitHub Pages
+
+Pushes to `master` build and publish the site with the GitHub Pages workflow.
+In repository **Settings → Pages**, select **GitHub Actions** as the source.
+The workflow sets `SITE_URL` to the Pages URL, including its repository path,
+so navigation, assets, search, canonical URLs and feeds work under that path.
+The existing Hostinger workflow remains available for `main`.
+
 ## Project structure
 
 ```

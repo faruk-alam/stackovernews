@@ -29,10 +29,10 @@
   <meta name="twitter:description" content="{{description}}">
   <meta name="twitter:image" content="{{ogImage}}">
 
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="{{basePath}}/favicon.svg" type="image/svg+xml">
   <link rel="alternate" type="application/rss+xml" title="{{siteName}} RSS" href="{{siteUrl}}/rss.xml">
-  <link rel="preload" href="/style.css" as="style">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="preload" href="{{basePath}}/style.css" as="style">
+  <link rel="stylesheet" href="{{basePath}}/style.css">
   {{extraHead}}
 
   <!-- Apply saved theme before paint to avoid a flash of the wrong theme -->
@@ -63,8 +63,8 @@
         <button id="menu-toggle" type="button" class="btn-icon lg:hidden" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <a href="/" class="flex items-center gap-2" aria-label="{{siteName}} home">
-          <img src="/logo.svg" alt="" width="36" height="36" class="h-9 w-9 flex-none">
+        <a href="{{basePath}}/" class="flex items-center gap-2" aria-label="{{siteName}} home">
+          <img src="{{basePath}}/logo.svg" alt="" width="36" height="36" class="h-9 w-9 flex-none">
           <span class="whitespace-nowrap text-xl font-black tracking-tight sm:text-2xl"><span class="sm:hidden">{{siteShortName}}</span><span class="hidden sm:inline">{{siteName}}</span></span>
         </a>
       </div>
@@ -108,8 +108,8 @@
   <footer class="mt-12 border-t border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900">
     <div class="container-site grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
       <div class="sm:col-span-2 lg:col-span-1">
-        <a href="/" class="flex items-center gap-2">
-          <img src="/logo.svg" alt="" width="32" height="32" class="h-8 w-8" loading="lazy">
+        <a href="{{basePath}}/" class="flex items-center gap-2">
+          <img src="{{basePath}}/logo.svg" alt="" width="32" height="32" class="h-8 w-8" loading="lazy">
           <span class="text-lg font-black">{{siteName}}</span>
         </a>
         <p class="mt-3 text-sm text-neutral-600 dark:text-neutral-400">{{tagline}}</p>
@@ -123,17 +123,17 @@
       <div>
         <h2 class="text-sm font-bold uppercase tracking-wider">Company</h2>
         <ul class="mt-3 space-y-2 text-sm">
-          <li><a class="hover:text-brand-600" href="/about/">About</a></li>
-          <li><a class="hover:text-brand-600" href="/contact/">Contact</a></li>
-          <li><a class="hover:text-brand-600" href="/editorial-policy/">Editorial Policy</a></li>
+          <li><a class="hover:text-brand-600" href="{{basePath}}/about/">About</a></li>
+          <li><a class="hover:text-brand-600" href="{{basePath}}/contact/">Contact</a></li>
+          <li><a class="hover:text-brand-600" href="{{basePath}}/editorial-policy/">Editorial Policy</a></li>
         </ul>
       </div>
       <div>
         <h2 class="text-sm font-bold uppercase tracking-wider">Legal</h2>
         <ul class="mt-3 space-y-2 text-sm">
-          <li><a class="hover:text-brand-600" href="/privacy-policy/">Privacy Policy</a></li>
-          <li><a class="hover:text-brand-600" href="/terms/">Terms of Service</a></li>
-          <li><a class="hover:text-brand-600" href="/rss.xml">RSS Feed</a></li>
+          <li><a class="hover:text-brand-600" href="{{basePath}}/privacy-policy/">Privacy Policy</a></li>
+          <li><a class="hover:text-brand-600" href="{{basePath}}/terms/">Terms of Service</a></li>
+          <li><a class="hover:text-brand-600" href="{{basePath}}/rss.xml">RSS Feed</a></li>
         </ul>
       </div>
     </div>
@@ -150,6 +150,6 @@
     </div>
   </div>
 
-  <script src="/js/main.js" defer></script>
+  <script src="{{basePath}}/js/main.js" defer></script>
 </body>
 </html>

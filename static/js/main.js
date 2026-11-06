@@ -106,7 +106,7 @@
   function loadIndex() {
     if (index) return Promise.resolve(index);
     if (!loading) {
-      loading = fetch('/search.json')
+      loading = fetch((cfg.basePath || '') + '/search.json')
         .then(function (r) {
           return r.json();
         })
